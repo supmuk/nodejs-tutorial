@@ -1,0 +1,38 @@
+const http = require('http');
+const fs = require('fs');
+
+const server = http.createServer(function(req, res){
+    // Request
+    
+    // console.log(req.url);
+    // console.log('------------');
+    // console.log(req.method);
+    // console.log('------------');
+    // console.log(req.headers);
+    
+    const url = req.url; 
+    console.log(url);
+    if( url === '/' ) {
+        res.setHeader('Content-Type', 'text/html');
+        res.write('<html><head><title>Node Js Tutorial</title></head><body>');
+        res.write('<h1>Home Page</h1><a href="/message">Click Here</a></body></html>');
+        return res.end();    
+    }
+
+    if( url == '/message') {
+        fs.writeFileSync('Data.txt', 'Dummy');
+        res.statusCode = 302;
+        res.setHeader('Location', '/');
+        return res.end();
+    }
+
+    // Response
+    res.setHeader('Content-Type', 'text/html');
+    res.write('<html><head><title>Node Js Tutorial</title></head><body>');
+    res.write('<h1>Hello world</h1></body></html>');
+    res.end();
+    
+    // process.exit(); // to quit the process
+});
+
+server.listen(3000);
